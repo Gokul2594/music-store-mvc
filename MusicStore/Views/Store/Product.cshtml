@@ -4,5 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<br />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Store", "Index", "Store")</li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.ProductName</li>
+    </ol>
+</nav>
+
 <h2>Product Details</h2>
 
+<h3>Product Name: @ViewBag.ProductName</h3>

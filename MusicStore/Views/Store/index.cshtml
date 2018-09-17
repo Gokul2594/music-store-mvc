@@ -8,8 +8,8 @@
 
 <p>Welcome to the store</p>
 <ul>
-    <li>@Html.ActionLink("Product One", "Product", "Store")</li>
-    <li>@Html.ActionLink("Product Two", "Product", "Store")</li>
-    <li>@Html.ActionLink("Product Three", "Product", "Store")</li>
+    <li>@Html.ActionLink("Product One", "Product", "Store", new { ProductName= "ProductOne" }, null)</li>
+    <li>@Html.ActionLink("Product Two", "Product", "Store", new { ProductName = "ProductTwo" }, null)</li>
+    <li>@Html.ActionLink("Product Three", "Product", "Store", new { ProductName = "ProductThree" }, null)</li>
 </ul>
 
