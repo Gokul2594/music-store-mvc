@@ -10,6 +10,7 @@ using MusicStore.Models;
 
 namespace MusicStore.Controllers
 {
+    [Authorize (Roles ="Administrator")]
     public class AlbumsController : Controller
     {
         private MusicStoreModel db = new MusicStoreModel();
@@ -21,6 +22,7 @@ namespace MusicStore.Controllers
             return View(albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList());
         }
 
+        [AllowAnonymous]
         // GET: Albums/Details/5
         public ActionResult Details(int? id)
         {

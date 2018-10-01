@@ -58,11 +58,11 @@ namespace MusicStore
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = System.Configuration.ConfigurationManager.AppSettings["GoogleClientId"],
+                ClientSecret = System.Configuration.ConfigurationManager.AppSettings["GoogleClientSecret"]
+            });
         }
     }
 }
