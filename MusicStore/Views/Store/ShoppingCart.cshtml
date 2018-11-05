@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MusicStore.Models.Cart>
+
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Decimal CartTotal = 0;
+}
+
+<h2>Your Cart</h2>
+
+<table class="table table-hover table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Album.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Count)
+        </th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        CartTotal += item.Count * @item.Album.Price;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Album.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>@string.Format("{0:c}", @item.Album.Price)</td>
+            <td>
+                @Html.ActionLink("Remove", "RemoveFromCart", new { RecordId = item.RecordId }, new { @class = "text-Danger" })
+            </td>
+        </tr>
+    }
+    <tr>
+        <td></td>
+        <td>
+            <a class=" btn btn-primary" href="/Store"><< Keep Shopping</a>
+        </td>
+        <td>
+            @string.Format("{0:c}", CartTotal)
+        </td>
+        <td>
+            <a class=" btn btn-primary" href="/Store/Checkout">Checkout >></a>
+        </td>
+    </tr>
+</table>

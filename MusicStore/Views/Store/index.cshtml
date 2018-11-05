@@ -1,15 +1,21 @@
-﻿
+﻿@model IEnumerable<MusicStore.Models.Genre>
+
 @{
-    ViewBag.Title = "Store";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Music Store</h2>
+<h2>Shop our Stroe</h2>
 
-<p>Welcome to the store</p>
-<ul>
-    <li>@Html.ActionLink("Product One", "Product", "Store", new { ProductName= "ProductOne" }, "text-danger")</li>
-    <li>@Html.ActionLink("Product Two", "Product", "Store", new { ProductName = "ProductTwo" }, null)</li>
-    <li>@Html.ActionLink("Product Three", "Product", "Store", new { ProductName = "ProductThree" }, null)</li>
-</ul>
+<div class="container-fluid">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 text-center well">
+            <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+            <a href="/store/albums?genre=@Html.DisplayFor(modelItem => item.Name)">
+                <button class="btn btn-primary">Shop Now</button>
+            </a>
+        </div>
+    }
+</div>
 

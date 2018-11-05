@@ -6,10 +6,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Albums</h2>
-<ul>
+<h2>Albums - @ViewBag.Genre</h2>
+<div class="container-fluid">
     @foreach (var a in Model)
     {
-        <li>@a.Title</li>
+    <div class="col-md-4 text-center well">
+        <h4>@a.Title</h4>
+        <p>@a.Artist.Name</p>
+        <h5>@String.Format("{0:c}", @a.Price)</h5>
+        <img src="@a.AlbumArtUrl" alt="@a.Title" /><br />
+        <a href="/Store/AddToCart?AlbumId=@a.AlbumId">
+            <button class="btn btn-primary">Add To Cart</button>
+        </a>
+    </div>
     }
-</ul>
+</div>

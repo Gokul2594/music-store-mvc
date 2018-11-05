@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Store";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Music Store</h2>
+
+<p>Welcome to the store</p>
+<ul>
+    <li>@Html.ActionLink("Product One", "Product", "Store", new { ProductName= "ProductOne" }, "text-danger")</li>
+    <li>@Html.ActionLink("Product Two", "Product", "Store", new { ProductName = "ProductTwo" }, null)</li>
+    <li>@Html.ActionLink("Product Three", "Product", "Store", new { ProductName = "ProductThree" }, null)</li>
+</ul>
+
