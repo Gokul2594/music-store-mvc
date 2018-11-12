@@ -6,6 +6,7 @@ using System.Web.Mvc;
 //Reference Models
 using MusicStore.Models;
 
+
 namespace MusicStore.Controllers
 {
     public class StoreController : Controller
@@ -43,16 +44,25 @@ namespace MusicStore.Controllers
         public ActionResult AddToCart(int AlbumId)
         {
             GetCartId();
-            string CurrentCartId = Session["CartId"].ToString(); 
-            Cart cartItem = new Cart
-            {
-                AlbumId = AlbumId,
-                Count = 1,
-                DateCreated = DateTime.Now,
-                CartId = CurrentCartId
-            };
+            string CurrentCartId = Session["CartId"].ToString();
 
-            db.Carts.Add(cartItem);
+            Cart cartItem = db.Carts.SingleOrDefault(c => c.CartId == CurrentCartId && c.AlbumId == AlbumId);
+            if (cartItem == null)
+            {
+                cartItem = new Cart
+                {
+                    AlbumId = AlbumId,
+                    Count = 1,
+                    DateCreated = DateTime.Now,
+                    CartId = CurrentCartId
+                };
+
+                db.Carts.Add(cartItem);
+            }
+            else
+            {
+                cartItem.Count++;
+            }
             db.SaveChanges();
 
             //show cart page
@@ -100,5 +110,70 @@ namespace MusicStore.Controllers
             //reload cart page
             return RedirectToAction("ShoppingCart");
         }
+
+        [Authorize]
+        //GET: Store/Checkout
+        public ActionResult Checkout()
+        {
+            MigrateCart();
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        //Post: Store/Checkout
+        public ActionResult Checkout(FormCollection values)
+        {
+            //Create a new order and populate from form values
+            Order order = new Order();
+            TryUpdateModel(order);
+            order.Username = User.Identity.Name;
+            order.OrderDate = DateTime.Now;
+            order.Email = User.Identity.Name;
+            var cartItems = db.Carts.Where(c => c.CartId == order.Username);
+            order.Total = (from c in cartItems select (int)c.Count * c.Album.Price).Sum();
+            int OrderId = order.OrderId;
+            //save the order
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            //save the items
+            foreach(Cart item in cartItems)
+            {
+                OrderDetail orderDetail = new OrderDetail
+                {
+                    OrderId = order.OrderId,
+                    AlbumId = item.AlbumId,
+                    Quantity = item.Count,
+                    UnitPrice = item.Album.Price
+                };
+                db.OrderDetails.Add(orderDetail);
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Details", "Orders", new { id = order.OrderId });
+        }
+
+        private void MigrateCart()
+        {
+            if (User.Identity.IsAuthenticated) {
+                if (!String.IsNullOrEmpty(Session["CartId"].ToString())
+                    && User.Identity.Name != Session["CartId"].ToString())
+                {
+                    string CurrentCartId = Session["CartId"].ToString();
+                    //get items with the random id
+                    var CartItems = db.Carts.Where(c => c.CartId == CurrentCartId);
+
+                    foreach (Cart item in CartItems)
+                    {
+                        item.CartId = User.Identity.Name;
+                    }
+                    db.SaveChanges();
+                    Session["Cartid"] = User.Identity.Name;
+                }
+            }
+        }
+
     }
 }

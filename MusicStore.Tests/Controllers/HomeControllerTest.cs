@@ -35,7 +35,7 @@ namespace MusicStore.Tests.Controllers
             ViewResult result = controller.About() as ViewResult;
 
             // Assert
-            Assert.AreEqual("Your application description page.", result.ViewBag.Message);
+            Assert.AreEqual("This is the about Page", result.ViewBag.Message);
         }
 
         [TestMethod]
@@ -48,6 +48,19 @@ namespace MusicStore.Tests.Controllers
             ViewResult result = controller.Contact() as ViewResult;
 
             // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void FAQ()
+        {
+            //arrange
+            HomeController homeController = new HomeController();
+
+            //act
+            ViewResult result = homeController.FAQ() as ViewResult;
+
+            //assert
             Assert.IsNotNull(result);
         }
     }

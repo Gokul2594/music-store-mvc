@@ -25,7 +25,9 @@
         CartTotal += item.Count * @item.Album.Price;
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Album.Title)
+                <a href="/Albums/Details/@item.AlbumId">
+                    @Html.DisplayFor(modelItem => item.Album.Title)
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Count)
@@ -45,7 +47,9 @@
             @string.Format("{0:c}", CartTotal)
         </td>
         <td>
-            <a class=" btn btn-primary" href="/Store/Checkout">Checkout >></a>
+            <a href="/Store/Checkout">
+                <button class="btn btn-primary">Checkout >></button>
+            </a>
         </td>
     </tr>
 </table>

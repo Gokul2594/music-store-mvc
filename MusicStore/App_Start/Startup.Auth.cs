@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using MusicStore.Models;
+using Stripe;
 
 namespace MusicStore
 {
@@ -63,6 +64,7 @@ namespace MusicStore
                 ClientId = System.Configuration.ConfigurationManager.AppSettings["GoogleClientId"],
                 ClientSecret = System.Configuration.ConfigurationManager.AppSettings["GoogleClientSecret"]
             });
+
         }
     }
 }
