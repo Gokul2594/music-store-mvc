@@ -24,7 +24,7 @@ namespace MusicStore.Tests.Controllers
         [TestInitialize]
         public void TestInitialize()
         {
-            //set up Moq data
+            //arrange mock data for all unit tests
             mock = new Mock<IAlbumsMock>();
 
             albums = new List<Album>
@@ -40,14 +40,12 @@ namespace MusicStore.Tests.Controllers
             //populate interface from the mock data
             mock.Setup(m => m.Albums).Returns(albums.AsQueryable());
 
+            albumsController = new AlbumsController(mock.Object);
         }
 
         [TestMethod]
         public void IndexReturnsView()
         {
-            //arrange
-            albumsController = new AlbumsController(mock.Object);
-
             //act
             ViewResult result = albumsController.Index() as ViewResult;
 
@@ -61,7 +59,7 @@ namespace MusicStore.Tests.Controllers
             var actual = (List<Album>)((ViewResult)albumsController.Index()).Model;
 
             //assert
-            CollectionAssert.AreEqual(albums, actual);
+            CollectionAssert.AreEqual(albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList(), actual);
         }
     }
 }

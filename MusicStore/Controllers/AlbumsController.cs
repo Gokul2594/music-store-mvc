@@ -29,9 +29,8 @@ namespace MusicStore.Controllers
         // GET: Albums
         public ActionResult Index()
         {
-            
             //return View(albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList());
-            var albums = db.Albums.Include(a => a.Artist).Include(a => a.Genre);
+            var albums = db.Albums.OrderBy(a => a.Artist.Name).ThenBy(a => a.Title).ToList();
             return View("Index", albums);
         }
 
